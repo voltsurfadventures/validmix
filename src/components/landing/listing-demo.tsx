@@ -71,7 +71,7 @@ const COPY: Record<MarketView, Record<Mode, Listing>> = {
   },
 };
 
-type Phase = "hold-bad" | "deleting" | "typing" | "hold-good";
+type Phase = "hold-bad" | "deleting-bad" | "typing-good" | "hold-good" | "deleting-good" | "typing-bad";
 
 function useRewrite(bad: string, good: string) {
   const [text, setText] = useState(bad);
@@ -87,39 +87,60 @@ function useRewrite(bad: string, good: string) {
 
     let cancelled = false;
     let timer = 0;
-    const later = (ms: number, fn: () => void) => {
-      timer = window.setTimeout(() => {
-        if (!cancelled) fn();
-      }, ms);
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = window.setTimeout(() => resolve(), ms);
+      });
+
+    const erase = async (source: string) => {
+      for (let i = source.length; i >= 0; i -= 1) {
+        if (cancelled) return;
+        setText(source.slice(0, i));
+        await wait(26);
+      }
     };
 
-    const holdGood = () => {
-      setPhase("hold-good");
-      setText(good);
-      later(2800, holdBad);
+    const type = async (source: string) => {
+      for (let i = 1; i <= source.length; i += 1) {
+        if (cancelled) return;
+        setText(source.slice(0, i));
+        await wait(38);
+      }
     };
 
-    const type = (i: number) => {
-      setPhase("typing");
-      setText(good.slice(0, i));
-      if (i >= good.length) later(360, holdGood);
-      else later(46, () => type(i + 1));
+    const run = async () => {
+      while (!cancelled) {
+        setPhase("hold-bad");
+        setText(bad);
+        await wait(1100);
+        if (cancelled) return;
+
+        setPhase("deleting-bad");
+        await erase(bad);
+        if (cancelled) return;
+        await wait(180);
+
+        setPhase("typing-good");
+        await type(good);
+        if (cancelled) return;
+
+        setPhase("hold-good");
+        setText(good);
+        await wait(1400);
+        if (cancelled) return;
+
+        setPhase("deleting-good");
+        await erase(good);
+        if (cancelled) return;
+        await wait(180);
+
+        setPhase("typing-bad");
+        await type(bad);
+        if (cancelled) return;
+      }
     };
 
-    const del = (i: number) => {
-      setPhase("deleting");
-      setText(bad.slice(0, i));
-      if (i <= 0) later(280, () => type(1));
-      else later(28, () => del(i - 1));
-    };
-
-    const holdBad = () => {
-      setPhase("hold-bad");
-      setText(bad);
-      later(1500, () => del(bad.length));
-    };
-
-    holdBad();
+    void run();
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
@@ -158,9 +179,9 @@ function AnimatedListing({ market }: { market: MarketView }) {
   const draft = COPY[market].draft;
   const polished = COPY[market].polished;
   const { text, phase } = useRewrite(draft.title, polished.title);
-  const done = phase === "hold-good";
+  const done = phase === "hold-good" || phase === "deleting-good";
   const listing = done ? polished : draft;
-  const typing = phase === "deleting" || phase === "typing";
+  const typing = phase !== "hold-bad" && phase !== "hold-good";
 
   return (
     <>
