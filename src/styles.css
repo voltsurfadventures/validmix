@@ -70,6 +70,44 @@
   }
 }
 
+.wordmark {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wordmark img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: calc(100% / 0.8187);
+}
+
+.wordmark-nav {
+  height: 2rem;
+}
+
+.wordmark-footer {
+  height: 1.75rem;
+}
+
+@media (min-width: 40rem) {
+  .wordmark-nav {
+    height: 2.25rem;
+  }
+}
+
+.ink-stamp {
+  display: inline-block;
+  margin-top: 0.15em;
+  padding: 0.02em 0.22em 0.08em;
+  border-radius: 0.18em;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  line-height: 1.05;
+  rotate: -1.5deg;
+}
+
 .menu-icon {
   position: absolute;
   inset: 0;
