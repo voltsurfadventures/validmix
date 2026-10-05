@@ -15,7 +15,7 @@
   --color-good: #2c5c45;
 
   --font-sans: "Instrument Sans", system-ui, sans-serif;
-  --font-display: "Instrument Serif", Georgia, serif;
+  --font-display: "Instrument Sans", system-ui, sans-serif;
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -112,9 +112,15 @@
     0 20px 28px -8px rgba(16, 34, 68, 0.42);
 }
 
-.hero-title {
+.hero-title,
+.font-display,
+.card-title {
   font-family: var(--font-sans);
   font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.hero-title {
   letter-spacing: -0.035em;
   line-height: 1.02;
 }

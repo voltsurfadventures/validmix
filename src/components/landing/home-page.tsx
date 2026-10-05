@@ -39,32 +39,32 @@ const FEATURES = [
   {
     icon: FileText,
     title: "The title",
-    body: "Product, size, and certificate in the title. No keyword stuffing.",
+    body: "Product, size, and certificate go in the title, in that order. A buyer should know what it is without opening the page. We take out the repeated keywords that make it look like spam.",
   },
   {
     icon: ListChecks,
     title: "The specs",
-    body: "Wattage, material, MOQ, and the other fields that were left blank.",
+    body: "Wattage, material, MOQ, voltage, and the other fields that were left blank or filled in with “yes.” Buyers filter on these. An empty field is a reason to skip you.",
   },
   {
     icon: Languages,
     title: "The description",
-    body: "Factory notes turned into English a buyer can send to their boss.",
+    body: "Factory notes turned into English a buyer can paste to their boss. Short sentences: what it does, what it does not do, and what is in the box. No “we are a professional manufacturer.”",
   },
   {
     icon: Camera,
     title: "The photos",
-    body: "A short list of what to shoot: nameplate, size, box, certificate.",
+    body: "A short shot list: the nameplate, the size next to a ruler, the box, and the certificate. The pictures should match the words, so nothing is a surprise when the goods arrive.",
   },
   {
     icon: ShieldCheck,
     title: "The claims",
-    body: "We flag exaggerations and certificates that don’t match the product.",
+    body: "We flag exaggerations and certificates that don’t match the product. If the page says CE and the certificate is for a different model, we mark it before a buyer does.",
   },
   {
     icon: SplitSquareHorizontal,
     title: "Both websites",
-    body: "One rewrite. A version for Alibaba and a version for Made-in-China.",
+    body: "One rewrite, then a version for Alibaba and a version for Made-in-China. The facts stay the same. The fields and the title length follow each site’s form.",
   },
 ];
 
@@ -317,7 +317,7 @@ function Product() {
                 <div className="flex size-10 items-center justify-center rounded-md border border-line text-navy">
                   <Icon className="size-5" strokeWidth={1.5} aria-hidden="true" />
                 </div>
-                <h3 className="mt-5 text-lg font-medium text-ink">{feature.title}</h3>
+                <h3 className="card-title mt-5 text-lg text-ink">{feature.title}</h3>
                 <p className="mt-2 text-sm text-pretty text-muted">{feature.body}</p>
               </article>
             );
@@ -348,7 +348,7 @@ function Method() {
           {STEPS.map((step) => (
             <li key={step.n} className="border-t border-ink pt-5">
               <p className="font-display text-2xl text-ink tabular-nums">{step.n}</p>
-              <h3 className="mt-3 text-lg font-medium text-ink">{step.title}</h3>
+              <h3 className="card-title mt-3 text-lg text-ink">{step.title}</h3>
               <p className="mt-2 text-sm text-pretty text-muted">{step.body}</p>
             </li>
           ))}
