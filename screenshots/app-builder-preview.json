@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "ValidMix — Listing polish for Alibaba and Made-in-China",
+      "hasCanvas": false,
+      "bodyTextLen": 4404,
+      "bodyTextHash": "930327d0ee01c1a44cdf74c8ac5f1c6acfb3cacd97b81cd211e8de8438c3ede3",
+      "bodyTextPrefix": "Product Method Pricing Stories Get a listing score Product Metho",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "ValidMix — Listing polish for Alibaba and Made-in-China",
+      "hasCanvas": false,
+      "bodyTextLen": 4363,
+      "bodyTextHash": "8e6450f1641b35ffa4608ffa0ddb072387b8de3aa7a8e4142e82477753c3154b",
+      "bodyTextPrefix": "Open menu Product Method Pricing Stories Get a listing score For",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

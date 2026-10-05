@@ -17,6 +17,6 @@ npm run dev
 
 1. Import this repo into [Vercel](https://vercel.com/new).
 2. Add domains `validmix.com` and `www.validmix.com`.
-3. Point Spaceship DNS at Vercel.
+3. Point Spaceship DNS at Vercel (A / CNAME records Vercel shows you).
 
 Auth and database are currently off (`VITE_AUTH_ENABLED=false`).
