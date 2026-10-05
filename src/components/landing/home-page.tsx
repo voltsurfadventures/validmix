@@ -257,13 +257,12 @@ function Hero() {
       <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <p className="rise">
-            <span className="inline-flex items-center rounded-md bg-ink px-3 py-2 text-sm font-medium text-paper">
+            <span className="inline-flex items-center rounded-md bg-navy px-3 py-2 text-sm font-medium text-paper">
               Alibaba and Made-in-China
             </span>
           </p>
-          <h1 className="rise rise-2 mt-6 font-display text-display text-balance text-ink">
-            We rewrite your product{" "}
-            <span className="ink-stamp">listings.</span>
+          <h1 className="rise rise-2 mt-6 font-display text-display text-balance">
+            <span className="navy-sentence">We rewrite your product listings.</span>
           </h1>
           <p className="rise rise-3 mt-6 max-w-xl text-lg text-pretty text-ink">
             The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
@@ -301,7 +300,7 @@ function Product() {
             const Icon = feature.icon;
             return (
               <article key={feature.title} className="rounded-card border border-line bg-card p-6">
-                <div className="flex size-10 items-center justify-center rounded-md border border-line text-ink">
+                <div className="flex size-10 items-center justify-center rounded-md border border-line text-navy">
                   <Icon className="size-5" strokeWidth={1.5} aria-hidden="true" />
                 </div>
                 <h3 className="mt-5 text-lg font-medium text-ink">{feature.title}</h3>

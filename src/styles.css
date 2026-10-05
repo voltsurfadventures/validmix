@@ -6,6 +6,7 @@
   --color-card: #f7f7f4;
   --color-ink: #2e2f2a;
   --color-ink-soft: #3f413b;
+  --color-navy: #1a3766;
   --color-muted: #5c615c;
   --color-faint: #8a8e88;
   --color-line: #d4d2cb;
@@ -95,6 +96,19 @@
   .wordmark-nav {
     height: 2.25rem;
   }
+}
+
+.navy-sentence {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.14em 0.32em 0.18em;
+  border-radius: 0.12em;
+  background: var(--color-navy);
+  color: var(--color-paper);
+  line-height: 1.14;
+  box-shadow:
+    0 8px 0 rgba(26, 55, 102, 0.14),
+    0 20px 28px -8px rgba(16, 34, 68, 0.42);
 }
 
 .ink-stamp {
