@@ -112,7 +112,7 @@ function useRewrite(bad: string, good: string) {
       while (!cancelled) {
         setPhase("hold-bad");
         setText(bad);
-        await wait(1100);
+        await wait(400);
         if (cancelled) return;
 
         setPhase("deleting-bad");

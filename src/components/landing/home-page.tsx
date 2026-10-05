@@ -265,19 +265,22 @@ function SiteHeader() {
 function Hero() {
   return (
     <section id="top" className="mx-auto max-w-6xl px-5 pt-8 pb-16 md:px-8 md:pt-12 md:pb-24">
-      <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-ink">
+      <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-quiet">
         {PLACES.map((place) => (
           <li key={place}>{place}</li>
         ))}
       </ul>
-      <div className="mt-8 grid items-start gap-12 lg:mt-10 lg:grid-cols-2 lg:gap-16">
+      <div className="mt-8 grid items-start gap-8 lg:mt-10 lg:grid-cols-2 lg:gap-16">
         <div>
-          <h1 className="rise font-display text-display text-balance">
-            <span className="navy-sentence">We rewrite your product listings.</span>
+          <h1 className="rise font-display text-display text-balance text-ink">
+            We rewrite your product listings.
           </h1>
-          <p className="rise rise-2 mt-6 max-w-xl text-lg text-pretty text-ink">
+          <p className="rise rise-2 mt-5 max-w-xl text-lg text-pretty text-ink">
             The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
           </p>
+          <div className="mt-8 lg:hidden">
+            <ListingDemo />
+          </div>
           <div className="rise rise-3 mt-8">
             <SignupForm id="hero-signup" compact />
           </div>
@@ -287,7 +290,7 @@ function Hero() {
             <li>You approve every line</li>
           </ul>
         </div>
-        <div className="lg:pt-6">
+        <div className="hidden lg:block">
           <ListingDemo />
         </div>
       </div>
@@ -300,8 +303,8 @@ function Product() {
     <section id="product" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">What we fix</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
-          <span className="navy-sentence">The parts of a listing buyers actually read</span>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
+          The parts of a listing buyers actually read
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-ink">
           A buyer decides from the title and the spec table. We fill those in so they don’t have to email you for the basics.
@@ -338,8 +341,8 @@ function Method() {
     <section id="method" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">How it works</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
-          <span className="navy-sentence">Send a listing. Get it back, rewritten.</span>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
+          Send a listing. Get it back, rewritten.
         </h2>
         <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
           {STEPS.map((step) => (
@@ -369,8 +372,8 @@ function Pricing() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm font-medium text-muted">Pricing</p>
-            <h2 className="mt-3 max-w-xl font-display text-section text-balance">
-              <span className="navy-sentence">Pay for how many listings you rewrite</span>
+            <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">
+              Pay for how many listings you rewrite
             </h2>
             <p className="mt-4 max-w-xl text-pretty text-ink">
               Prices in US dollars. Stop a monthly plan any time. A yearly plan includes two free months.
@@ -476,8 +479,8 @@ function Stories() {
     <section id="stories" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">Stories</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
-          <span className="navy-sentence">Sellers who stopped resending the spec sheet</span>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
+          Sellers who stopped resending the spec sheet
         </h2>
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
           {STORIES.map((story) => (

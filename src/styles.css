@@ -9,12 +9,13 @@
   --color-navy: #1a3766;
   --color-muted: #5c615c;
   --color-faint: #8a8e88;
+  --color-quiet: #a3a79f;
   --color-line: #d4d2cb;
   --color-danger: #8c3a32;
   --color-good: #2c5c45;
 
-  --font-sans: "Outfit", system-ui, sans-serif;
-  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+  --font-display: "Instrument Serif", Georgia, serif;
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -26,12 +27,12 @@
   --text-display: clamp(2.65rem, 1.35rem + 3.6vw, 4.6rem);
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.03em;
-  --text-display--font-weight: 500;
+  --text-display--font-weight: 400;
 
   --text-section: clamp(1.85rem, 1.35rem + 1.5vw, 2.6rem);
   --text-section--line-height: 1.15;
   --text-section--letter-spacing: -0.02em;
-  --text-section--font-weight: 500;
+  --text-section--font-weight: 400;
 }
 
 :root {
@@ -120,11 +121,11 @@
 .type-caret {
   display: inline-block;
   width: 2px;
-  height: 1em;
+  height: 1.05em;
   margin-left: 2px;
-  background: var(--color-navy);
+  background: var(--color-ink);
   vertical-align: text-bottom;
-  animation: caret-blink 0.9s steps(1) infinite;
+  animation: caret-blink 0.8s steps(1) infinite;
 }
 
 @keyframes caret-blink {
