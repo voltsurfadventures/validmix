@@ -18,8 +18,8 @@ import { SignupForm } from "@/components/landing/signup-form";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "#product", label: "Product" },
-  { href: "#method", label: "Method" },
+  { href: "#product", label: "What we fix" },
+  { href: "#method", label: "How it works" },
   { href: "#pricing", label: "Pricing" },
   { href: "#stories", label: "Stories" },
 ];
@@ -27,51 +27,51 @@ const NAV = [
 const FEATURES = [
   {
     icon: FileText,
-    title: "Titles buyers can filter",
-    body: "Alibaba search favors a structured title: product, spec, use, certification. Inside the character limit, without keyword stuffing.",
+    title: "The title",
+    body: "Product, size, and certificate in the title. No keyword stuffing.",
   },
   {
     icon: ListChecks,
-    title: "Attributes that are filled",
-    body: "Blank wattage, material, or MOQ fields bury a SKU on both marketplaces. ValidMix completes the required set from your spec sheet.",
+    title: "The specs",
+    body: "Wattage, material, MOQ, and the other fields that were left blank.",
   },
   {
     icon: Languages,
-    title: "English a buyer can quote",
-    body: "Factory shorthand becomes lead time, packing, and incoterm language a procurement desk can forward internally.",
+    title: "The description",
+    body: "Factory notes turned into English a buyer can send to their boss.",
   },
   {
     icon: Camera,
-    title: "A shot list, not a guess",
-    body: "Each claim maps to a photo: nameplate, dimension, packaging, certification mark. The photographer knows what to shoot.",
+    title: "The photos",
+    body: "A short list of what to shoot: nameplate, size, box, certificate.",
   },
   {
     icon: ShieldCheck,
-    title: "A compliance pass",
-    body: "Superlatives, medical claims, and mismatched certificates get flagged before a listing is rejected or quietly discounted.",
+    title: "The claims",
+    body: "We flag exaggerations and certificates that don’t match the product.",
   },
   {
     icon: SplitSquareHorizontal,
-    title: "One brief, two marketplaces",
-    body: "Alibaba and Made-in-China want different field order and length. You edit the product once. ValidMix shapes both listings.",
+    title: "Both websites",
+    body: "One rewrite. A version for Alibaba and a version for Made-in-China.",
   },
 ];
 
 const STEPS = [
   {
     n: "01",
-    title: "Send the messy listing",
-    body: "Paste a product URL, a spreadsheet row, or the Chinese spec. Model numbers stay exact. We do not invent specifications.",
+    title: "Send the listing",
+    body: "Paste the product link or the spec sheet. We keep your model numbers exactly as they are.",
   },
   {
     n: "02",
-    title: "Review the rewrite",
-    body: "Title, attributes, description, image notes, and a change log. Accept a line, edit it, or lock a term in your glossary.",
+    title: "Check the rewrite",
+    body: "You get a new title, filled-in specs, and a clearer description. Change anything you don’t like.",
   },
   {
     n: "03",
-    title: "Publish both versions",
-    body: "Export an Alibaba-ready listing and a Made-in-China-ready listing. Your team posts. The log shows the factory what changed.",
+    title: "Post it",
+    body: "Download one file for Alibaba and one for Made-in-China. Your team posts them.",
   },
 ];
 
@@ -83,29 +83,29 @@ const TIERS: {
   {
     id: "bench",
     points: [
-      "25 SKUs each month",
+      "25 listings each month",
       "Alibaba or Made-in-China",
-      "Title, attributes, and description",
-      "Score before and after",
+      "Title, specs, and description",
+      "A score before and after",
     ],
   },
   {
     id: "floor",
     featured: true,
     points: [
-      "120 SKUs each month",
-      "Both marketplaces, every SKU",
-      "Keyword map and image brief",
-      "Change log your team can follow",
+      "120 listings each month",
+      "Both websites, every listing",
+      "Search words and a photo list",
+      "A list of every change",
     ],
   },
   {
     id: "line",
     points: [
-      "Unlimited SKUs",
-      "Five seats",
-      "Glossary and tone lock",
-      "Editor review on flagship SKUs",
+      "Unlimited listings",
+      "Five people on the account",
+      "Your own word list",
+      "A person reviews your main products",
     ],
   },
 ];
@@ -181,7 +181,9 @@ function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 md:px-8">
         <a href="#top" className="shrink-0" onClick={close}>
-          <img src="/wordmark.png" alt="ValidMix" className="h-8 w-auto sm:h-9" />
+          <span className="wordmark wordmark-nav">
+            <img src="/wordmark.png" alt="ValidMix" />
+          </span>
         </a>
         <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           {NAV.map((item) => (
@@ -254,23 +256,25 @@ function Hero() {
     <section id="top" className="mx-auto max-w-6xl px-5 pt-10 pb-16 md:px-8 md:pt-16 md:pb-24">
       <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
-          <p className="rise text-sm font-medium tracking-wide text-muted">
-            For suppliers on Alibaba and Made-in-China
+          <p className="rise">
+            <span className="inline-flex items-center rounded-md bg-ink px-3 py-2 text-sm font-medium text-paper">
+              Alibaba and Made-in-China
+            </span>
           </p>
-          <h1 className="rise rise-2 mt-4 font-display text-display text-balance text-ink">
-            Factory specs, written so buyers inquire.
+          <h1 className="rise rise-2 mt-6 font-display text-display text-balance text-ink">
+            We rewrite your product{" "}
+            <span className="ink-stamp">listings.</span>
           </h1>
-          <p className="rise rise-3 mt-5 max-w-xl text-lg text-pretty text-muted">
-            ValidMix rewrites product listings — titles, required attributes, and buyer-language
-            copy — so the right buyer can find the SKU and ask for a quote instead of basic specs.
+          <p className="rise rise-3 mt-6 max-w-xl text-lg text-pretty text-ink">
+            The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
           </p>
           <div className="rise rise-4 mt-8">
             <SignupForm id="hero-signup" compact />
           </div>
-          <ul className="mt-8 flex flex-col gap-2 text-sm text-muted sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
-            <li>Model numbers stay exact</li>
-            <li>Both marketplace formats</li>
-            <li>A change log for the factory</li>
+          <ul className="mt-8 flex flex-col gap-2 text-sm text-ink sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+            <li>Same model numbers</li>
+            <li>Both websites</li>
+            <li>You approve every line</li>
           </ul>
         </div>
         <div className="lg:pt-6">
@@ -285,13 +289,12 @@ function Product() {
   return (
     <section id="product" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="text-sm font-medium text-muted">Product</p>
+        <p className="text-sm font-medium text-muted">What we fix</p>
         <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          What actually changes in the listing
+          The parts of a listing buyers actually read
         </h2>
-        <p className="mt-4 max-w-2xl text-pretty text-muted">
-          Buyers on Alibaba and Made-in-China.com decide from the title and the attribute table.
-          ValidMix makes those fields complete, specific, and consistent with the product you ship.
+        <p className="mt-4 max-w-2xl text-pretty text-ink">
+          A buyer decides from the title and the spec table. We fill those in so they don’t have to email you for the basics.
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature) => {
@@ -310,7 +313,7 @@ function Product() {
         <div className="mt-10">
           <Button asChild variant="secondary">
             <a href="#signup">
-              Score a live listing
+              Score a listing
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </Button>
@@ -324,9 +327,9 @@ function Method() {
   return (
     <section id="method" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="text-sm font-medium text-muted">Method</p>
+        <p className="text-sm font-medium text-muted">How it works</p>
         <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Three steps from a factory sheet to a listing you can publish
+          Send a listing. Get it back, rewritten.
         </h2>
         <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
           {STEPS.map((step) => (
@@ -357,10 +360,10 @@ function Pricing() {
           <div>
             <p className="text-sm font-medium text-muted">Pricing</p>
             <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">
-              Priced by how many SKUs you publish
+              Pay for how many listings you rewrite
             </h2>
-            <p className="mt-4 max-w-xl text-pretty text-muted">
-              USD. Monthly plans stop whenever you want. Annual plans include two months.
+            <p className="mt-4 max-w-xl text-pretty text-ink">
+              Prices in US dollars. Stop a monthly plan any time. A yearly plan includes two free months.
             </p>
           </div>
           <div
@@ -399,8 +402,8 @@ function Pricing() {
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="font-display text-2xl text-ink">{details.name}</h3>
                   {tier.featured ? (
-                    <span className="rounded-sm border border-line px-2 py-1 text-xs font-medium text-muted">
-                      Most desks
+                    <span className="rounded-md bg-ink px-2 py-1 text-xs font-medium text-paper">
+                      Most chosen
                     </span>
                   ) : null}
                 </div>
@@ -464,7 +467,7 @@ function Stories() {
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">Stories</p>
         <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Desks that stopped resending the spec sheet
+          Sellers who stopped resending the spec sheet
         </h2>
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
           {STORIES.map((story) => (
@@ -489,11 +492,10 @@ function FinalCta() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-2 lg:items-start">
         <div>
           <h2 className="font-display text-section text-balance">
-            Send one messy listing. We’ll show the polished version.
+            Send one messy listing. We’ll rewrite it.
           </h2>
-          <p className="mt-4 max-w-md text-pretty text-paper/75">
-            A score on a live Alibaba or Made-in-China SKU, with the rewrite beside the original.
-            Useful even if you stay on the Bench plan.
+          <p className="mt-4 max-w-md text-pretty text-paper/80">
+            We score it, rewrite it, and email both versions — Alibaba and Made-in-China.
           </p>
         </div>
         <SignupForm id="footer-signup" tone="ink" />
@@ -507,10 +509,11 @@ function SiteFooter() {
     <footer className="border-t border-line bg-paper">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-8">
         <div>
-          <img src="/wordmark.png" alt="" className="h-7 w-auto" />
+          <span className="wordmark wordmark-footer">
+            <img src="/wordmark.png" alt="" />
+          </span>
           <p className="mt-4 max-w-sm text-sm text-pretty text-muted">
-            Listing polish for suppliers on Alibaba and Made-in-China.com. ValidMix is independent
-            and is not affiliated with Alibaba Group or Focus Technology.
+            We rewrite product listings for sellers on Alibaba and Made-in-China. Not part of either company.
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium" aria-label="Footer">
