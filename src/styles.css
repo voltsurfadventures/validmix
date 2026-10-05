@@ -111,6 +111,33 @@
     0 20px 28px -8px rgba(16, 34, 68, 0.42);
 }
 
+.card-lift {
+  box-shadow:
+    0 1px 2px rgba(16, 34, 68, 0.05),
+    0 14px 30px -16px rgba(26, 55, 102, 0.4);
+}
+
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--color-navy);
+  vertical-align: text-bottom;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  45.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .ink-stamp {
   display: inline-block;
   margin-top: 0.15em;
@@ -222,7 +249,8 @@
   }
 
   .rise,
-  .demo-swap {
+  .demo-swap,
+  .type-caret {
     animation: none;
   }
 

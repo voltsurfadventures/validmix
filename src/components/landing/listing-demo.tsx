@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type MarketView = "alibaba" | "mic";
@@ -16,7 +16,7 @@ const COPY: Record<MarketView, Record<Mode, Listing>> = {
   alibaba: {
     draft: {
       titleLabel: "Product title",
-      title: "led bulb cheap good quality factory wholesale price china supplier",
+      title: "LED bulb lamp is very good quality and cheap price, we factory hot sale, welcome inquiry best supplier",
       rows: [
         ["Wattage", "—"],
         ["Lamp base", "—"],
@@ -44,7 +44,7 @@ const COPY: Record<MarketView, Record<Mode, Listing>> = {
   mic: {
     draft: {
       titleLabel: "Product name",
-      title: "LED light bulb manufacturer good price",
+      title: "We are make LED light bulb, quality very high, price is cheap, many stock please contact now",
       rows: [
         ["Model number", "A60"],
         ["Material", "—"],
@@ -71,42 +71,109 @@ const COPY: Record<MarketView, Record<Mode, Listing>> = {
   },
 };
 
+type Phase = "hold-bad" | "deleting" | "typing" | "hold-good";
+
+function useRewrite(bad: string, good: string) {
+  const [text, setText] = useState(bad);
+  const [phase, setPhase] = useState<Phase>("hold-bad");
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setText(good);
+      setPhase("hold-good");
+      return;
+    }
+
+    let cancelled = false;
+    let timer = 0;
+    const later = (ms: number, fn: () => void) => {
+      timer = window.setTimeout(() => {
+        if (!cancelled) fn();
+      }, ms);
+    };
+
+    const holdGood = () => {
+      setPhase("hold-good");
+      setText(good);
+      later(2800, holdBad);
+    };
+
+    const type = (i: number) => {
+      setPhase("typing");
+      setText(good.slice(0, i));
+      if (i >= good.length) later(360, holdGood);
+      else later(46, () => type(i + 1));
+    };
+
+    const del = (i: number) => {
+      setPhase("deleting");
+      setText(bad.slice(0, i));
+      if (i <= 0) later(280, () => type(1));
+      else later(28, () => del(i - 1));
+    };
+
+    const holdBad = () => {
+      setPhase("hold-bad");
+      setText(bad);
+      later(1500, () => del(bad.length));
+    };
+
+    holdBad();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [bad, good]);
+
+  return { text, phase };
+}
+
 export function ListingDemo() {
   const [market, setMarket] = useState<MarketView>("alibaba");
-  const [mode, setMode] = useState<Mode>("polished");
-  const listing = COPY[market][mode];
 
   return (
-    <figure className="rounded-card border border-line bg-card p-4 sm:p-6">
+    <figure className="card-lift rounded-card border border-line bg-card p-4 sm:p-6">
       <figcaption className="sr-only">
-        Sample lighting listing, draft compared with a ValidMix rewrite
+        A poorly written listing is deleted one character at a time, then rewritten
       </figcaption>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="grid grid-cols-2 rounded-md border border-line p-1" role="group" aria-label="Marketplace">
-          <Toggle
-            pressed={market === "alibaba"}
-            onClick={() => setMarket("alibaba")}
-            label="Alibaba"
-          />
-          <Toggle
-            pressed={market === "mic"}
-            onClick={() => setMarket("mic")}
-            label="Made-in-China"
-          />
-        </div>
-        <div className="grid grid-cols-2 rounded-md border border-line p-1" role="group" aria-label="Listing version">
-          <Toggle pressed={mode === "draft"} onClick={() => setMode("draft")} label="Draft" />
-          <Toggle
-            pressed={mode === "polished"}
-            onClick={() => setMode("polished")}
-            label="Polished"
-          />
-        </div>
+      <div className="grid grid-cols-2 rounded-md border border-line p-1" role="group" aria-label="Marketplace">
+        <Toggle
+          pressed={market === "alibaba"}
+          onClick={() => setMarket("alibaba")}
+          label="Alibaba"
+        />
+        <Toggle
+          pressed={market === "mic"}
+          onClick={() => setMarket("mic")}
+          label="Made-in-China"
+        />
       </div>
+      <AnimatedListing key={market} market={market} />
+    </figure>
+  );
+}
 
-      <div key={`${market}-${mode}`} className="demo-swap mt-5">
+function AnimatedListing({ market }: { market: MarketView }) {
+  const draft = COPY[market].draft;
+  const polished = COPY[market].polished;
+  const { text, phase } = useRewrite(draft.title, polished.title);
+  const done = phase === "hold-good";
+  const listing = done ? polished : draft;
+  const typing = phase === "deleting" || phase === "typing";
+
+  return (
+    <>
+      <p className="sr-only" aria-live="polite">
+        {phase === "hold-bad" ? `Original title. ${draft.title}` : ""}
+        {phase === "hold-good" ? `Rewritten title. ${polished.title}` : ""}
+      </p>
+      <div className="mt-5">
         <p className="text-xs font-medium tracking-wide text-faint uppercase">{listing.titleLabel}</p>
-        <p className="mt-2 text-lg leading-snug font-medium text-balance text-ink">{listing.title}</p>
+        <p className="mt-2 min-h-24 text-lg leading-snug font-medium text-ink" aria-hidden="true">
+          {text}
+          {typing ? <span className="type-caret" /> : null}
+        </p>
         <dl className="mt-5 divide-y divide-line border-y border-line">
           {listing.rows.map(([label, value]) => (
             <div key={label} className="flex items-baseline justify-between gap-4 py-2.5">
@@ -114,7 +181,12 @@ export function ListingDemo() {
               <dd
                 className={cn(
                   "text-right text-sm font-medium tabular-nums",
-                  value === "—" || value === "discuss" || value === "yes" || value === "white" || value === "normal" || value === "many"
+                  value === "—" ||
+                    value === "discuss" ||
+                    value === "yes" ||
+                    value === "white" ||
+                    value === "normal" ||
+                    value === "many"
                     ? "text-faint"
                     : "text-ink",
                 )}
@@ -136,7 +208,7 @@ export function ListingDemo() {
           <div className="score-fill" style={{ width: `${listing.score}%` }} />
         </div>
       </div>
-    </figure>
+    </>
   );
 }
 

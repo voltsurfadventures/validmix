@@ -17,6 +17,17 @@ import { PLANS, type PlanId, usePlan } from "@/components/landing/plan-context";
 import { SignupForm } from "@/components/landing/signup-form";
 import { cn } from "@/lib/utils";
 
+const PLACES = [
+  "Alibaba",
+  "Made-in-China",
+  "Global Sources",
+  "IndiaMART",
+  "1688",
+  "DHgate",
+  "EC21",
+  "AliExpress",
+];
+
 const NAV = [
   { href: "#product", label: "What we fix" },
   { href: "#method", label: "How it works" },
@@ -253,21 +264,21 @@ function SiteHeader() {
 
 function Hero() {
   return (
-    <section id="top" className="mx-auto max-w-6xl px-5 pt-10 pb-16 md:px-8 md:pt-16 md:pb-24">
-      <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+    <section id="top" className="mx-auto max-w-6xl px-5 pt-8 pb-16 md:px-8 md:pt-12 md:pb-24">
+      <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-ink">
+        {PLACES.map((place) => (
+          <li key={place}>{place}</li>
+        ))}
+      </ul>
+      <div className="mt-8 grid items-start gap-12 lg:mt-10 lg:grid-cols-2 lg:gap-16">
         <div>
-          <p className="rise">
-            <span className="inline-flex items-center rounded-md bg-navy px-3 py-2 text-sm font-medium text-paper">
-              Alibaba and Made-in-China
-            </span>
-          </p>
-          <h1 className="rise rise-2 mt-6 font-display text-display text-balance">
+          <h1 className="rise font-display text-display text-balance">
             <span className="navy-sentence">We rewrite your product listings.</span>
           </h1>
-          <p className="rise rise-3 mt-6 max-w-xl text-lg text-pretty text-ink">
+          <p className="rise rise-2 mt-6 max-w-xl text-lg text-pretty text-ink">
             The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
           </p>
-          <div className="rise rise-4 mt-8">
+          <div className="rise rise-3 mt-8">
             <SignupForm id="hero-signup" compact />
           </div>
           <ul className="mt-8 flex flex-col gap-2 text-sm text-ink sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
@@ -289,8 +300,8 @@ function Product() {
     <section id="product" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">What we fix</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          The parts of a listing buyers actually read
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
+          <span className="navy-sentence">The parts of a listing buyers actually read</span>
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-ink">
           A buyer decides from the title and the spec table. We fill those in so they don’t have to email you for the basics.
@@ -299,7 +310,7 @@ function Product() {
           {FEATURES.map((feature) => {
             const Icon = feature.icon;
             return (
-              <article key={feature.title} className="rounded-card border border-line bg-card p-6">
+              <article key={feature.title} className="card-lift rounded-card border border-line bg-card p-6">
                 <div className="flex size-10 items-center justify-center rounded-md border border-line text-navy">
                   <Icon className="size-5" strokeWidth={1.5} aria-hidden="true" />
                 </div>
@@ -327,8 +338,8 @@ function Method() {
     <section id="method" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">How it works</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Send a listing. Get it back, rewritten.
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
+          <span className="navy-sentence">Send a listing. Get it back, rewritten.</span>
         </h2>
         <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
           {STEPS.map((step) => (
@@ -358,8 +369,8 @@ function Pricing() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm font-medium text-muted">Pricing</p>
-            <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">
-              Pay for how many listings you rewrite
+            <h2 className="mt-3 max-w-xl font-display text-section text-balance">
+              <span className="navy-sentence">Pay for how many listings you rewrite</span>
             </h2>
             <p className="mt-4 max-w-xl text-pretty text-ink">
               Prices in US dollars. Stop a monthly plan any time. A yearly plan includes two free months.
@@ -394,7 +405,7 @@ function Pricing() {
               <article
                 key={tier.id}
                 className={cn(
-                  "flex flex-col rounded-card border bg-card p-6",
+                  "card-lift flex flex-col rounded-card border bg-card p-6",
                   tier.featured ? "border-ink" : "border-line",
                 )}
               >
@@ -465,12 +476,12 @@ function Stories() {
     <section id="stories" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-sm font-medium text-muted">Stories</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Sellers who stopped resending the spec sheet
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance">
+          <span className="navy-sentence">Sellers who stopped resending the spec sheet</span>
         </h2>
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
           {STORIES.map((story) => (
-            <figure key={story.name} className="flex flex-col rounded-card border border-line bg-card p-6">
+            <figure key={story.name} className="card-lift flex flex-col rounded-card border border-line bg-card p-6">
               <blockquote className="flex-1 text-pretty text-ink">“{story.quote}”</blockquote>
               <figcaption className="mt-6 border-t border-line pt-4">
                 <p className="font-medium text-ink">{story.name}</p>
