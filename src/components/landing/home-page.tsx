@@ -264,23 +264,23 @@ function SiteHeader() {
 
 function Hero() {
   return (
-    <section id="top" className="mx-auto max-w-6xl px-5 pt-8 pb-16 md:px-8 md:pt-12 md:pb-24">
+    <section id="top" className="mx-auto max-w-6xl px-5 pt-5 pb-16 md:px-8 md:pt-8 md:pb-24">
       <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-quiet">
         {PLACES.map((place) => (
           <li key={place}>{place}</li>
         ))}
       </ul>
-      <div className="mt-8 grid items-start gap-8 lg:mt-10 lg:grid-cols-2 lg:gap-16">
+      <div className="mt-5 grid items-start gap-6 lg:mt-6 lg:grid-cols-2 lg:gap-16">
         <div>
-          <h1 className="rise font-display text-display text-balance text-ink">
+          <h1 className="hero-title rise text-display text-balance text-ink">
             We rewrite your product listings.
           </h1>
+          <div className="mt-5 lg:hidden">
+            <ListingDemo />
+          </div>
           <p className="rise rise-2 mt-5 max-w-xl text-lg text-pretty text-ink">
             The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
           </p>
-          <div className="mt-8 lg:hidden">
-            <ListingDemo />
-          </div>
           <div className="rise rise-3 mt-8">
             <SignupForm id="hero-signup" compact />
           </div>
