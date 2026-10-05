@@ -14,8 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ListingDemo } from "@/components/landing/listing-demo";
 import { useI18n, type Lang } from "@/components/landing/locale";
-import { CURRENCIES, formatMoney, PLANS, type PlanId, usePlan } from "@/components/landing/plan-context";
-import { ScoreForm } from "@/components/landing/score-form";
+import { PLAN_ORDER, PLAN_PRICE, usd } from "@/components/landing/plan-context";
+import { SampleForm } from "@/components/landing/sample-form";
 import { cn } from "@/lib/utils";
 
 const PLACES = [
@@ -191,6 +191,13 @@ function SiteHeader() {
 
 function Hero() {
   const { t } = useI18n();
+
+  const seeRewrite = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const id = window.matchMedia("(min-width: 1024px)").matches ? "rewrite-desk" : "rewrite";
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return (
     <section id="top" className="mx-auto max-w-6xl px-5 pt-5 pb-16 md:px-8 md:pt-8 md:pb-24">
       <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-quiet">
@@ -198,15 +205,23 @@ function Hero() {
           <li key={place}>{place}</li>
         ))}
       </ul>
+      <p className="mt-3 text-sm text-muted">{t.placesNote}</p>
       <div className="mt-5 grid items-start gap-6 lg:mt-6 lg:grid-cols-2 lg:gap-16">
         <div>
           <h1 className="hero-title rise text-display text-balance text-ink">{t.heroTitle}</h1>
-          <div className="mt-5 lg:hidden">
+          <div id="rewrite" className="mt-5 lg:hidden">
             <ListingDemo />
           </div>
           <p className="rise rise-2 mt-5 max-w-xl text-lg text-pretty text-ink">{t.heroSub}</p>
-          <div className="rise rise-3 mt-8">
-            <ScoreForm id="hero-signup" />
+          <div className="rise rise-3 mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button asChild>
+              <a href="#signup">{t.cta}</a>
+            </Button>
+            <Button asChild variant="secondary">
+              <a href="#rewrite" onClick={seeRewrite}>
+                {t.heroSecondary}
+              </a>
+            </Button>
           </div>
           <ul className="mt-8 flex flex-col gap-2 text-sm text-ink sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
             {t.points.map((point) => (
@@ -214,7 +229,7 @@ function Hero() {
             ))}
           </ul>
         </div>
-        <div className="hidden lg:block">
+        <div id="rewrite-desk" className="hidden lg:block">
           <ListingDemo />
         </div>
       </div>
@@ -280,120 +295,56 @@ function Method() {
 
 function Pricing() {
   const { t } = useI18n();
-  const { plan, setPlan, annual, setAnnual, currency, setCurrency, rates } = usePlan();
-  const tiers: { id: PlanId; featured?: boolean; blurb: string; points: string[] }[] = [
-    { id: "bench", blurb: t.benchBlurb, points: t.benchPoints },
-    { id: "floor", featured: true, blurb: t.floorBlurb, points: t.floorPoints },
-  ];
-
-  const choose = (id: PlanId) => {
-    setPlan(id);
-    document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section id="pricing" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm font-medium text-muted">{t.pricingKicker}</p>
-            <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">{t.pricingTitle}</h2>
-            <p className="mt-4 max-w-xl text-pretty text-ink">{t.pricingIntro}</p>
-          </div>
-          <div className="flex w-full max-w-sm flex-col gap-3">
-            <label className="flex items-center justify-between gap-3 text-sm font-medium text-ink">
-              <span>{t.currency}</span>
-              <select
-                value={currency}
-                onChange={(event) => setCurrency(event.target.value as typeof currency)}
-                className="h-11 rounded-md border border-line bg-card px-3 text-sm font-medium text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25"
-              >
-                {CURRENCIES.map((code) => (
-                  <option key={code} value={code}>
-                    {code}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <div className="billing-track" role="radiogroup" aria-label="Billing period">
-              <span className="billing-pill" data-annual={annual ? "true" : "false"} aria-hidden="true" />
-              <BillingOption checked={!annual} onSelect={() => setAnnual(false)} label={t.monthly} />
-              <BillingOption checked={annual} onSelect={() => setAnnual(true)} label={t.annual} />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 grid max-w-4xl gap-4 md:grid-cols-2">
-          {tiers.map((tier) => {
-            const details = PLANS[tier.id];
-            const price = annual ? details.yearly : details.monthly;
-            const priceLabel = formatMoney(price, currency, rates);
-            const selected = plan === tier.id;
+        <p className="text-sm font-medium text-muted">{t.pricingKicker}</p>
+        <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">{t.pricingTitle}</h2>
+        <p className="mt-4 max-w-xl text-pretty text-ink">{t.pricingIntro}</p>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {PLAN_ORDER.map((id) => {
+            const copy = t.plans[id];
+            const featured = id === "floor";
             return (
               <article
-                key={tier.id}
+                key={id}
                 className={cn(
                   "card-lift flex flex-col rounded-card border bg-card p-6",
-                  tier.featured ? "border-ink" : "border-line",
+                  featured ? "border-ink" : "border-line",
                 )}
               >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-display text-2xl text-ink">{details.name}</h3>
-                  {tier.featured ? (
+                <p className="min-h-4 text-xs font-medium text-muted">{copy.eyebrow}</p>
+                <div className="mt-2 flex items-center justify-between gap-3">
+                  <h3 className="font-display text-2xl text-ink">{copy.name}</h3>
+                  {featured ? (
                     <span className="rounded-md bg-ink px-2 py-1 text-xs font-medium text-paper">{t.mostChosen}</span>
                   ) : null}
                 </div>
-                <p className="mt-2 min-h-12 text-sm text-pretty text-muted">{tier.blurb}</p>
-                <p className="mt-6 flex items-baseline gap-2">
-                  <span className="font-display text-section text-ink tabular-nums">{priceLabel}</span>
-                  <span className="text-sm text-muted">{annual ? t.perYear : t.perMonth}</span>
-                </p>
+                <p className="mt-6 font-display text-section text-ink tabular-nums">{usd(PLAN_PRICE[id])}</p>
+                <p className="mt-2 min-h-12 text-sm text-pretty text-muted">{copy.line}</p>
                 <ul className="mt-6 flex flex-1 flex-col gap-3">
-                  {tier.points.map((point) => (
+                  {copy.points.map((point) => (
                     <li key={point} className="flex gap-3 text-sm text-ink">
                       <Check className="mt-0.5 size-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
                       <span>{point}</span>
                     </li>
                   ))}
                 </ul>
-                <Button
-                  className="mt-8 w-full"
-                  variant={tier.featured || selected ? "primary" : "secondary"}
-                  onClick={() => choose(tier.id)}
-                >
-                  {t.continue} {details.name}
+                <Button asChild className="mt-8 w-full" variant={featured ? "primary" : "secondary"}>
+                  {id === "sample" ? (
+                    <a href="#signup">{copy.button}</a>
+                  ) : (
+                    <a href={`/checkout?plan=${id}`}>{copy.button}</a>
+                  )}
                 </Button>
               </article>
             );
           })}
         </div>
+        <p className="mt-8 max-w-2xl text-sm text-pretty text-muted">{t.pricingNote}</p>
       </div>
     </section>
-  );
-}
-
-function BillingOption({
-  checked,
-  onSelect,
-  label,
-}: {
-  checked: boolean;
-  onSelect: () => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={checked}
-      onClick={onSelect}
-      className={cn(
-        "relative z-10 h-10 rounded-pill text-sm font-medium transition-colors duration-150",
-        checked ? "text-paper" : "text-muted hover:text-ink",
-      )}
-    >
-      {label}
-    </button>
   );
 }
 
@@ -430,7 +381,7 @@ function FinalCta() {
           <h2 className="font-display text-section text-balance">{t.finalTitle}</h2>
           <p className="mt-4 max-w-md text-pretty text-paper/80">{t.finalBody}</p>
         </div>
-        <ScoreForm id="footer-signup" tone="ink" />
+        <SampleForm id="footer-signup" />
       </div>
     </section>
   );
