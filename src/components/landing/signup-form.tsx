@@ -48,8 +48,8 @@ export function SignupForm({
               Request received for {saved.email}
             </p>
             <p className={cn("mt-1 text-sm text-pretty", onInk ? "text-paper/75" : "text-muted")}>
-              We’ll score one live listing on {marketLabel(saved.market)} and send the{" "}
-              {PLANS[saved.plan].name} rewrite to this address.
+              We’ll rewrite one live listing for {marketLabel(saved.market)} and email the{" "}
+              {PLANS[saved.plan].name} version to this address.
             </p>
             <button
               type="button"
@@ -173,7 +173,7 @@ export function SignupForm({
         </div>
       ) : (
         <p className={cn("text-sm", onInk ? "text-paper/70" : "text-muted")}>
-          We’ll score one live SKU on the {PLANS[plan].name} plan. No newsletter.
+          We’ll rewrite one live listing on the {PLANS[plan].name} plan and email it here. No newsletter.
         </p>
       )}
     </form>

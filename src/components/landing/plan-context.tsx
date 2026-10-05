@@ -11,19 +11,19 @@ export const PLANS: Record<
     name: "Bench",
     monthly: 79,
     yearly: 790,
-    blurb: "A trading desk proving the rewrite on a live catalog.",
+    blurb: "Try it on a small catalog. One website.",
   },
   floor: {
     name: "Floor",
     monthly: 189,
     yearly: 1890,
-    blurb: "The plan most factories run once the first SKUs convert.",
+    blurb: "The plan most factories use. Both websites.",
   },
   line: {
     name: "Line",
     monthly: 449,
     yearly: 4490,
-    blurb: "Multi-brand exporters who publish on both marketplaces every week.",
+    blurb: "For teams posting on both sites every week.",
   },
 };
 
