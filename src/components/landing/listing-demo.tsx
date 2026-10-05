@@ -154,26 +154,23 @@ export function ListingDemo() {
   const [market, setMarket] = useState<MarketView>("alibaba");
 
   return (
-    <figure className="demo-card overflow-hidden rounded-card">
-      <figcaption className="flex items-center justify-between gap-3 bg-navy px-4 py-3 text-paper">
-        <span className="text-sm font-semibold tracking-wide">Demonstration</span>
-        <span className="text-xs text-paper/80">Sample only. Not your listing.</span>
+    <figure className="demo-card p-4 sm:p-6">
+      <figcaption className="sr-only">
+        Sample listing. The title deletes, then the rewrite is typed.
       </figcaption>
-      <div className="p-4 sm:p-5">
-        <div className="grid grid-cols-2 rounded-md border border-navy/20 bg-card p-1" role="group" aria-label="Marketplace">
-          <Toggle
-            pressed={market === "alibaba"}
-            onClick={() => setMarket("alibaba")}
-            label="Alibaba"
-          />
-          <Toggle
-            pressed={market === "mic"}
-            onClick={() => setMarket("mic")}
-            label="Made-in-China"
-          />
-        </div>
-        <AnimatedListing key={market} market={market} />
+      <div className="grid grid-cols-2 rounded-md border border-line bg-paper p-1" role="group" aria-label="Marketplace">
+        <Toggle
+          pressed={market === "alibaba"}
+          onClick={() => setMarket("alibaba")}
+          label="Alibaba"
+        />
+        <Toggle
+          pressed={market === "mic"}
+          onClick={() => setMarket("mic")}
+          label="Made-in-China"
+        />
       </div>
+      <AnimatedListing key={market} market={market} />
     </figure>
   );
 }
@@ -202,8 +199,8 @@ function AnimatedListing({ market }: { market: MarketView }) {
         {phase === "hold-bad" ? `Original title. ${draft.title}` : ""}
         {phase === "hold-good" ? `Rewritten title. ${polished.title}` : ""}
       </p>
-      <p className="mt-4 text-sm font-semibold text-navy">{status}</p>
-      <div className="mt-3 rounded-xl bg-card p-4">
+      <p className="mt-4 text-sm font-medium text-muted">{status}</p>
+      <div className="mt-3">
         <p className="text-xs font-medium tracking-wide text-faint uppercase">{listing.titleLabel}</p>
         <p className="mt-2 min-h-24 text-lg leading-snug font-semibold text-ink" aria-hidden="true">
           {text}
@@ -235,10 +232,10 @@ function AnimatedListing({ market }: { market: MarketView }) {
         <div className="mt-4">
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-muted">Listing score</span>
-            <span className="font-display text-2xl text-navy tabular-nums">{listing.score}</span>
+            <span className="font-display text-2xl text-ink tabular-nums">{listing.score}</span>
           </div>
           <div className="mt-2 h-1.5 overflow-hidden rounded-pill bg-paper-2" aria-hidden="true">
-            <div className="demo-score" style={{ width: `${listing.score}%` }} />
+            <div className="score-fill" style={{ width: `${listing.score}%` }} />
           </div>
         </div>
       </div>
