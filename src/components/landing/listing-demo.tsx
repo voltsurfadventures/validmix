@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "@/components/landing/locale";
 import { cn } from "@/lib/utils";
 
 type MarketView = "alibaba" | "mic";
@@ -112,7 +113,7 @@ function useRewrite(bad: string, good: string) {
       while (!cancelled) {
         setPhase("hold-bad");
         setText(bad);
-        await wait(400);
+        await wait(80);
         if (cancelled) return;
 
         setPhase("deleting-bad");
@@ -176,6 +177,7 @@ export function ListingDemo() {
 }
 
 function AnimatedListing({ market }: { market: MarketView }) {
+  const { t } = useI18n();
   const draft = COPY[market].draft;
   const polished = COPY[market].polished;
   const { text, phase } = useRewrite(draft.title, polished.title);
@@ -184,25 +186,30 @@ function AnimatedListing({ market }: { market: MarketView }) {
   const typing = phase !== "hold-bad" && phase !== "hold-good";
   const status =
     phase === "deleting-bad"
-      ? "Deleting the messy title"
+      ? t.demo.deleting
       : phase === "typing-good"
-        ? "Typing the rewrite"
+        ? t.demo.typing
         : phase === "hold-good" || phase === "deleting-good"
-          ? "Rewritten version"
+          ? t.demo.rewritten
           : phase === "typing-bad"
-            ? "Putting the messy title back"
-            : "Messy version";
+            ? t.demo.restoring
+            : t.demo.messy;
+  const note =
+    market === "alibaba"
+      ? done
+        ? t.demo.noteGoodAli
+        : t.demo.noteDraftAli
+      : done
+        ? t.demo.noteGoodMic
+        : t.demo.noteDraftMic;
+  const titleLabel = market === "alibaba" ? t.demo.productTitle : t.demo.productName;
 
   return (
     <>
-      <p className="sr-only" aria-live="polite">
-        {phase === "hold-bad" ? `Original title. ${draft.title}` : ""}
-        {phase === "hold-good" ? `Rewritten title. ${polished.title}` : ""}
-      </p>
       <p className="mt-4 text-sm font-medium text-muted">{status}</p>
       <div className="mt-3">
-        <p className="text-xs font-medium tracking-wide text-faint uppercase">{listing.titleLabel}</p>
-        <p className="mt-2 min-h-24 text-lg leading-snug font-semibold text-ink" aria-hidden="true">
+        <p className="text-xs font-medium tracking-wide text-faint uppercase">{titleLabel}</p>
+        <p className="demo-title mt-2 text-lg leading-snug font-semibold text-ink" aria-hidden="true">
           {text}
           {typing ? <span className="type-caret" /> : null}
         </p>
@@ -228,7 +235,7 @@ function AnimatedListing({ market }: { market: MarketView }) {
             </div>
           ))}
         </dl>
-        <p className="mt-4 text-sm text-pretty text-muted">{listing.note}</p>
+        <p className="mt-4 text-sm text-pretty text-muted">{note}</p>
         <div className="mt-4">
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-muted">Listing score</span>

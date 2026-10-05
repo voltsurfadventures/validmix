@@ -14,7 +14,7 @@
   --color-danger: #8c3a32;
   --color-good: #2c5c45;
 
-  --font-sans: "Instrument Sans", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
   --font-display: "Instrument Sans", system-ui, sans-serif;
 
   --radius-sm: 0.5rem;
@@ -128,9 +128,16 @@
 .demo-card {
   border-radius: 0.75rem;
   background: var(--color-card);
+  overflow-anchor: none;
   box-shadow:
     0 1px 2px rgba(46, 47, 42, 0.06),
     0 16px 36px -8px rgba(46, 47, 42, 0.28);
+}
+
+.demo-title {
+  height: 8rem;
+  overflow: hidden;
+  overflow-anchor: none;
 }
 
 .card-lift {

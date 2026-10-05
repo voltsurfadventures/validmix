@@ -13,8 +13,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ListingDemo } from "@/components/landing/listing-demo";
-import { PLANS, type PlanId, usePlan } from "@/components/landing/plan-context";
-import { SignupForm } from "@/components/landing/signup-form";
+import { useI18n, type Lang } from "@/components/landing/locale";
+import { CURRENCIES, formatMoney, PLANS, type PlanId, usePlan } from "@/components/landing/plan-context";
+import { ScoreForm } from "@/components/landing/score-form";
 import { cn } from "@/lib/utils";
 
 const PLACES = [
@@ -28,121 +29,12 @@ const PLACES = [
   "AliExpress",
 ];
 
-const NAV = [
-  { href: "#product", label: "What we fix" },
-  { href: "#method", label: "How it works" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#stories", label: "Stories" },
-];
+const ICONS = [FileText, ListChecks, Languages, Camera, ShieldCheck, SplitSquareHorizontal];
 
-const FEATURES = [
-  {
-    icon: FileText,
-    title: "The title",
-    body: "Product, size, and certificate go in the title, in that order. A buyer should know what it is without opening the page. We take out the repeated keywords that make it look like spam.",
-  },
-  {
-    icon: ListChecks,
-    title: "The specs",
-    body: "Wattage, material, MOQ, voltage, and the other fields that were left blank or filled in with “yes.” Buyers filter on these. An empty field is a reason to skip you.",
-  },
-  {
-    icon: Languages,
-    title: "The description",
-    body: "Factory notes turned into English a buyer can paste to their boss. Short sentences: what it does, what it does not do, and what is in the box. No “we are a professional manufacturer.”",
-  },
-  {
-    icon: Camera,
-    title: "The photos",
-    body: "A short shot list: the nameplate, the size next to a ruler, the box, and the certificate. The pictures should match the words, so nothing is a surprise when the goods arrive.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "The claims",
-    body: "We flag exaggerations and certificates that don’t match the product. If the page says CE and the certificate is for a different model, we mark it before a buyer does.",
-  },
-  {
-    icon: SplitSquareHorizontal,
-    title: "Both websites",
-    body: "One rewrite, then a version for Alibaba and a version for Made-in-China. The facts stay the same. The fields and the title length follow each site’s form.",
-  },
-];
-
-const STEPS = [
-  {
-    n: "01",
-    title: "Send the listing",
-    body: "Paste the product link or the spec sheet. We keep your model numbers exactly as they are.",
-  },
-  {
-    n: "02",
-    title: "Check the rewrite",
-    body: "You get a new title, filled-in specs, and a clearer description. Change anything you don’t like.",
-  },
-  {
-    n: "03",
-    title: "Post it",
-    body: "Download one file for Alibaba and one for Made-in-China. Your team posts them.",
-  },
-];
-
-const TIERS: {
-  id: PlanId;
-  points: string[];
-  featured?: boolean;
-}[] = [
-  {
-    id: "bench",
-    points: [
-      "25 listings each month",
-      "Alibaba or Made-in-China",
-      "Title, specs, and description",
-      "A score before and after",
-    ],
-  },
-  {
-    id: "floor",
-    featured: true,
-    points: [
-      "120 listings each month",
-      "Both websites, every listing",
-      "Search words and a photo list",
-      "A list of every change",
-    ],
-  },
-  {
-    id: "line",
-    points: [
-      "Unlimited listings",
-      "Five people on the account",
-      "Your own word list",
-      "A person reviews your main products",
-    ],
-  },
-];
-
-const STORIES = [
-  {
-    quote:
-      "Our Alibaba titles were factory shorthand. After the A60 rewrite, buyers filtered by color temperature and base instead of asking us to resend the spec.",
-    name: "Chen Yu",
-    role: "Export lead, Ningbo Harbor Lighting",
-    where: "Alibaba",
-  },
-  {
-    quote:
-      "Half the Made-in-China attributes were blank. We stopped getting “please send specs” and started getting questions about MOQ and lead time.",
-    name: "Amina Hassan",
-    role: "Founder, Yiwu PackRight",
-    where: "Made-in-China",
-  },
-  {
-    quote:
-      "We sell the same hardware on both sites. One brief, two formats. The change log is the document our factory actually follows.",
-    name: "Lukas Berger",
-    role: "Sales, Rhine & Pearl Trading",
-    where: "Both marketplaces",
-  },
+const LANGS: { id: Lang; label: string }[] = [
+  { id: "en", label: "EN" },
+  { id: "zh", label: "中文" },
+  { id: "vi", label: "VI" },
 ];
 
 export function HomePage() {
@@ -162,7 +54,38 @@ export function HomePage() {
   );
 }
 
+function useNav() {
+  const { t } = useI18n();
+  return [
+    { href: "#product", label: t.nav.product },
+    { href: "#method", label: t.nav.method },
+    { href: "#pricing", label: t.nav.pricing },
+    { href: "#stories", label: t.nav.stories },
+  ];
+}
+
+function LangSwitch() {
+  const { lang, setLang } = useI18n();
+  return (
+    <div className="flex items-center gap-2 text-sm" role="group" aria-label="Language">
+      {LANGS.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          aria-pressed={lang === item.id}
+          onClick={() => setLang(item.id)}
+          className={cn("font-medium", lang === item.id ? "text-ink" : "text-quiet hover:text-ink")}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function SiteHeader() {
+  const { t } = useI18n();
+  const nav = useNav();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -197,15 +120,16 @@ function SiteHeader() {
           </span>
         </a>
         <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <a key={item.href} href={item.href} className="text-sm font-medium text-muted hover:text-ink">
               {item.label}
             </a>
           ))}
         </nav>
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-5 md:flex">
+          <LangSwitch />
           <Button asChild>
-            <a href="#signup">Get a listing score</a>
+            <a href="#signup">{t.cta}</a>
           </Button>
         </div>
         <button
@@ -215,7 +139,7 @@ function SiteHeader() {
           aria-controls="mobile-nav"
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+          <span className="sr-only">{open ? t.menuClose : t.menuOpen}</span>
           <span className="relative size-5">
             <Menu
               className={cn("menu-icon", open && "menu-icon-out")}
@@ -231,7 +155,10 @@ function SiteHeader() {
       <div id="mobile-nav" className={cn("nav-panel absolute inset-x-0 top-full z-30 bg-paper md:hidden", open ? "border-b border-line" : "pointer-events-none")} data-open={open ? "true" : "false"}>
         <div>
           <nav className="flex flex-col gap-1 px-5 pt-2 pb-5" aria-label="Mobile">
-            {NAV.map((item) => (
+            <div className="mb-2">
+              <LangSwitch />
+            </div>
+            {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -252,7 +179,7 @@ function SiteHeader() {
                   follow("#signup");
                 }}
               >
-                Get a listing score
+                {t.cta}
               </a>
             </Button>
           </nav>
@@ -263,6 +190,7 @@ function SiteHeader() {
 }
 
 function Hero() {
+  const { t } = useI18n();
   return (
     <section id="top" className="mx-auto max-w-6xl px-5 pt-5 pb-16 md:px-8 md:pt-8 md:pb-24">
       <ul className="flex flex-wrap justify-between gap-x-6 gap-y-2 text-sm font-medium text-quiet">
@@ -272,22 +200,18 @@ function Hero() {
       </ul>
       <div className="mt-5 grid items-start gap-6 lg:mt-6 lg:grid-cols-2 lg:gap-16">
         <div>
-          <h1 className="hero-title rise text-display text-balance text-ink">
-            We rewrite your product listings.
-          </h1>
+          <h1 className="hero-title rise text-display text-balance text-ink">{t.heroTitle}</h1>
           <div className="mt-5 lg:hidden">
             <ListingDemo />
           </div>
-          <p className="rise rise-2 mt-5 max-w-xl text-lg text-pretty text-ink">
-            The title, the specs, and the description. Clear enough that a buyer can ask for a quote.
-          </p>
+          <p className="rise rise-2 mt-5 max-w-xl text-lg text-pretty text-ink">{t.heroSub}</p>
           <div className="rise rise-3 mt-8">
-            <SignupForm id="hero-signup" compact />
+            <ScoreForm id="hero-signup" />
           </div>
           <ul className="mt-8 flex flex-col gap-2 text-sm text-ink sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
-            <li>Same model numbers</li>
-            <li>Both websites</li>
-            <li>You approve every line</li>
+            {t.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
           </ul>
         </div>
         <div className="hidden lg:block">
@@ -299,19 +223,16 @@ function Hero() {
 }
 
 function Product() {
+  const { t } = useI18n();
   return (
     <section id="product" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="text-sm font-medium text-muted">What we fix</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          The parts of a listing buyers actually read
-        </h2>
-        <p className="mt-4 max-w-2xl text-pretty text-ink">
-          A buyer decides from the title and the spec table. We fill those in so they don’t have to email you for the basics.
-        </p>
+        <p className="text-sm font-medium text-muted">{t.featuresKicker}</p>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">{t.featuresTitle}</h2>
+        <p className="mt-4 max-w-2xl text-pretty text-ink">{t.featuresIntro}</p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature) => {
-            const Icon = feature.icon;
+          {t.features.map((feature, index) => {
+            const Icon = ICONS[index] ?? FileText;
             return (
               <article key={feature.title} className="card-lift rounded-card border border-line bg-card p-6">
                 <div className="flex size-10 items-center justify-center rounded-md border border-line text-navy">
@@ -326,7 +247,7 @@ function Product() {
         <div className="mt-10">
           <Button asChild variant="secondary">
             <a href="#signup">
-              Score a listing
+              {t.featureCta}
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </Button>
@@ -337,17 +258,16 @@ function Product() {
 }
 
 function Method() {
+  const { t } = useI18n();
   return (
     <section id="method" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="text-sm font-medium text-muted">How it works</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Send a listing. Get it back, rewritten.
-        </h2>
+        <p className="text-sm font-medium text-muted">{t.methodKicker}</p>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">{t.methodTitle}</h2>
         <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-          {STEPS.map((step) => (
-            <li key={step.n} className="border-t border-ink pt-5">
-              <p className="font-display text-2xl text-ink tabular-nums">{step.n}</p>
+          {t.steps.map((step, index) => (
+            <li key={step.title} className="border-t border-ink pt-5">
+              <p className="font-display text-2xl text-ink tabular-nums">{String(index + 1).padStart(2, "0")}</p>
               <h3 className="card-title mt-3 text-lg text-ink">{step.title}</h3>
               <p className="mt-2 text-sm text-pretty text-muted">{step.body}</p>
             </li>
@@ -359,7 +279,12 @@ function Method() {
 }
 
 function Pricing() {
-  const { plan, setPlan, annual, setAnnual } = usePlan();
+  const { t } = useI18n();
+  const { plan, setPlan, annual, setAnnual, currency, setCurrency, rates } = usePlan();
+  const tiers: { id: PlanId; featured?: boolean; blurb: string; points: string[] }[] = [
+    { id: "bench", blurb: t.benchBlurb, points: t.benchPoints },
+    { id: "floor", featured: true, blurb: t.floorBlurb, points: t.floorPoints },
+  ];
 
   const choose = (id: PlanId) => {
     setPlan(id);
@@ -371,38 +296,38 @@ function Pricing() {
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-medium text-muted">Pricing</p>
-            <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">
-              Pay for how many listings you rewrite
-            </h2>
-            <p className="mt-4 max-w-xl text-pretty text-ink">
-              Prices in US dollars. Stop a monthly plan any time. A yearly plan includes two free months.
-            </p>
+            <p className="text-sm font-medium text-muted">{t.pricingKicker}</p>
+            <h2 className="mt-3 max-w-xl font-display text-section text-balance text-ink">{t.pricingTitle}</h2>
+            <p className="mt-4 max-w-xl text-pretty text-ink">{t.pricingIntro}</p>
           </div>
-          <div
-            className="billing-track w-full max-w-xs shrink-0"
-            role="radiogroup"
-            aria-label="Billing period"
-          >
-            <span className="billing-pill" data-annual={annual ? "true" : "false"} aria-hidden="true" />
-            <BillingOption
-              checked={!annual}
-              onSelect={() => setAnnual(false)}
-              label="Monthly"
-            />
-            <BillingOption checked={annual} onSelect={() => setAnnual(true)} label="Annual" />
+          <div className="flex w-full max-w-sm flex-col gap-3">
+            <label className="flex items-center justify-between gap-3 text-sm font-medium text-ink">
+              <span>{t.currency}</span>
+              <select
+                value={currency}
+                onChange={(event) => setCurrency(event.target.value as typeof currency)}
+                className="h-11 rounded-md border border-line bg-card px-3 text-sm font-medium text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/25"
+              >
+                {CURRENCIES.map((code) => (
+                  <option key={code} value={code}>
+                    {code}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="billing-track" role="radiogroup" aria-label="Billing period">
+              <span className="billing-pill" data-annual={annual ? "true" : "false"} aria-hidden="true" />
+              <BillingOption checked={!annual} onSelect={() => setAnnual(false)} label={t.monthly} />
+              <BillingOption checked={annual} onSelect={() => setAnnual(true)} label={t.annual} />
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-3">
-          {TIERS.map((tier) => {
+        <div className="mt-12 grid max-w-4xl gap-4 md:grid-cols-2">
+          {tiers.map((tier) => {
             const details = PLANS[tier.id];
             const price = annual ? details.yearly : details.monthly;
-            const priceLabel = new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            }).format(price);
+            const priceLabel = formatMoney(price, currency, rates);
             const selected = plan === tier.id;
             return (
               <article
@@ -415,15 +340,13 @@ function Pricing() {
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="font-display text-2xl text-ink">{details.name}</h3>
                   {tier.featured ? (
-                    <span className="rounded-md bg-ink px-2 py-1 text-xs font-medium text-paper">
-                      Most chosen
-                    </span>
+                    <span className="rounded-md bg-ink px-2 py-1 text-xs font-medium text-paper">{t.mostChosen}</span>
                   ) : null}
                 </div>
-                <p className="mt-2 min-h-12 text-sm text-pretty text-muted">{details.blurb}</p>
+                <p className="mt-2 min-h-12 text-sm text-pretty text-muted">{tier.blurb}</p>
                 <p className="mt-6 flex items-baseline gap-2">
                   <span className="font-display text-section text-ink tabular-nums">{priceLabel}</span>
-                  <span className="text-sm text-muted">{annual ? "per year" : "per month"}</span>
+                  <span className="text-sm text-muted">{annual ? t.perYear : t.perMonth}</span>
                 </p>
                 <ul className="mt-6 flex flex-1 flex-col gap-3">
                   {tier.points.map((point) => (
@@ -438,7 +361,7 @@ function Pricing() {
                   variant={tier.featured || selected ? "primary" : "secondary"}
                   onClick={() => choose(tier.id)}
                 >
-                  Continue with {details.name}
+                  {t.continue} {details.name}
                 </Button>
               </article>
             );
@@ -475,15 +398,14 @@ function BillingOption({
 }
 
 function Stories() {
+  const { t } = useI18n();
   return (
     <section id="stories" className="scroll-mt-24 border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <p className="text-sm font-medium text-muted">Stories</p>
-        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">
-          Sellers who stopped resending the spec sheet
-        </h2>
+        <p className="text-sm font-medium text-muted">{t.storiesKicker}</p>
+        <h2 className="mt-3 max-w-2xl font-display text-section text-balance text-ink">{t.storiesTitle}</h2>
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
-          {STORIES.map((story) => (
+          {t.stories.map((story) => (
             <figure key={story.name} className="card-lift flex flex-col rounded-card border border-line bg-card p-6">
               <blockquote className="flex-1 text-pretty text-ink">“{story.quote}”</blockquote>
               <figcaption className="mt-6 border-t border-line pt-4">
@@ -500,24 +422,23 @@ function Stories() {
 }
 
 function FinalCta() {
+  const { t } = useI18n();
   return (
     <section id="signup" className="scroll-mt-24 bg-ink text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-2 lg:items-start">
         <div>
-          <h2 className="font-display text-section text-balance">
-            Send one messy listing. We’ll rewrite it.
-          </h2>
-          <p className="mt-4 max-w-md text-pretty text-paper/80">
-            We score it, rewrite it, and email both versions — Alibaba and Made-in-China.
-          </p>
+          <h2 className="font-display text-section text-balance">{t.finalTitle}</h2>
+          <p className="mt-4 max-w-md text-pretty text-paper/80">{t.finalBody}</p>
         </div>
-        <SignupForm id="footer-signup" tone="ink" />
+        <ScoreForm id="footer-signup" tone="ink" />
       </div>
     </section>
   );
 }
 
 function SiteFooter() {
+  const { t } = useI18n();
+  const nav = useNav();
   return (
     <footer className="border-t border-line bg-paper">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-8">
@@ -525,18 +446,16 @@ function SiteFooter() {
           <span className="wordmark wordmark-footer">
             <img src="/wordmark.png" alt="" />
           </span>
-          <p className="mt-4 max-w-sm text-sm text-pretty text-muted">
-            We rewrite product listings for sellers on Alibaba and Made-in-China. Not part of either company.
-          </p>
+          <p className="mt-4 max-w-sm text-sm text-pretty text-muted">{t.footer}</p>
         </div>
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium" aria-label="Footer">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <a key={item.href} href={item.href} className="text-muted hover:text-ink">
               {item.label}
             </a>
           ))}
           <a href="#signup" className="text-ink">
-            Get a score
+            {t.ctaShort}
           </a>
         </nav>
       </div>
