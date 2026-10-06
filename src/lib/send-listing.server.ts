@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { PLAN_PRICE, isPaidPlan, type PlanId } from "@/components/landing/plan-context";
 
-const INBOX = "voltsurfadventures@gmail.com";
+const INBOX = "validmix1@gmail.com";
 const LEADS_REPO = "validmix-inquiries";
 const LEADS_OWNER = "voltsurfadventures";
 
