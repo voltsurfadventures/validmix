@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SampleForm } from "@/components/landing/sample-form";
 import { useI18n } from "@/components/landing/locale";
 import { PLAN_PRICE, isPaidPlan, usd } from "@/components/landing/plan-context";
 
@@ -34,14 +35,10 @@ function CheckoutPage() {
             </h1>
             <p className="mt-4 max-w-xl text-pretty text-ink">{copy.line}</p>
             <p className="mt-8 max-w-xl text-pretty text-ink">{t.checkoutBody}</p>
-            <p className="mt-6">
-              <a
-                href="https://www.paypal.com"
-                className="text-sm font-medium text-muted underline decoration-line underline-offset-4 hover:text-ink"
-              >
-                {t.checkoutPaypal}
-              </a>
-            </p>
+            <p className="mt-4 max-w-xl text-sm text-muted">{t.checkoutPaypal}</p>
+            <div className="mt-10 max-w-xl">
+              <SampleForm id="checkout-listing" plan={plan} tone="paper" />
+            </div>
           </>
         ) : (
           <>
